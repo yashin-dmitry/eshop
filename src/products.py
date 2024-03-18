@@ -14,7 +14,7 @@ class Product:
         price (float): Цена продукта.
         quantity (int): Количество продукта в наличии.
     """
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name: str, description: str, price: float, quantity: int):
         if not isinstance(name, str):
             raise TypeError("имя должно быть строкой")
         if not isinstance(description, str):

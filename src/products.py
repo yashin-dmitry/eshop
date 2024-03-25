@@ -36,8 +36,6 @@ class Product:
         self._price = price
         self.quantity = quantity
 
-
-
     @property
     def price(self):
         return self._price
@@ -58,3 +56,12 @@ class Product:
     @classmethod
     def new_product(cls, name, description, price, quantity):
         return cls(name, description, price, quantity)
+
+    @property
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if not isinstance(other, Product):
+            raise TypeError("сложение возможно только с другим продуктом")
+        return self.price * self.quantity + other.price * other.quantity

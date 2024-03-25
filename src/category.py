@@ -1,7 +1,7 @@
 from src.products import Product
 
-class Category:
 
+class Category:
     """
     Класс, представляющий категорию продуктов.
 
@@ -35,3 +35,9 @@ class Category:
         return '\n'.join([f"{product.name}, {product.price} руб. Остаток: "
                           f"{product.quantity} шт."
                           for product in self.__products])
+
+    def __len__(self):
+        return sum(product.quantity for product in self.__products)
+
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self)} шт."

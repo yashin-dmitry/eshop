@@ -57,11 +57,88 @@ class Product:
     def new_product(cls, name, description, price, quantity):
         return cls(name, description, price, quantity)
 
-    @property
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if not isinstance(other, Product):
-            raise TypeError("сложение возможно только с другим продуктом")
+        if not isinstance(other, self.__class__):
+            raise TypeError(f"Невозможно сложить объекты разных классов: {type(self).__name__} и {type(other).__name__}")
         return self.price * self.quantity + other.price * other.quantity
+
+class Smartphone(Product):
+    """
+    Класс, представляющий смартфон.
+
+    аргументы:
+        name (str): Название смартфона.
+        description (str): Описание смартфона.
+        price (float): Цена смартфона.
+        quantity (int): Количество смартфонов в наличии.
+        performance (str): Производительность смартфона.
+        model (str): Модель смартфона.
+        memory_size (int): Объем встроенной памяти смартфона.
+        color (str): Цвет смартфона.
+
+    атрибуты:
+        name (str): Название смартфона.
+        description (str): Описание смартфона.
+        price (float): Цена смартфона.
+        quantity (int): Количество смартфонов в наличии.
+        performance (str): Производительность смартфона.
+        model (str): Модель смартфона.
+        memory_size (int): Объем встроенной памяти смартфона.
+        color (str): Цвет смартфона.
+    """
+
+    def __init__(self, name: str, description: str, price: float,
+                 quantity: int, performance: str, model: str,
+                 memory_size: int, color: str):
+        super().__init__(name, description, price, quantity)
+        self.performance = performance
+        self.model = model
+        self.memory_size = memory_size
+        self.color = color
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. " \
+               f"Производительность: {self.performance}. " \
+               f"Модель: {self.model}. " \
+               f"Объем встроенной памяти: {self.memory_size} ГБ. " \
+               f"Цвет: {self.color}."
+
+class Grass(Product):
+    """
+    Класс, представляющий траву газонную.
+
+    аргументы:
+        name (str): Название травы.
+        description (str): Описание травы.
+        price (float): Цена травы.
+        quantity (int): Количество травы в наличии.
+        country (str): Страна-производитель травы.
+        germination_time (str): Срок прорастания травы.
+        color (str): Цвет травы.
+
+    атрибуты:
+        name (str): Название травы.
+        description (str): Описание травы.
+        price (float): Цена травы.
+        quantity (int): Количество травы в наличии.
+        country (str): Страна-производитель травы.
+        germination_time (str): Срок прорастания травы.
+        color (str): Цвет травы.
+    """
+
+    def __init__(self, name: str, description: str, price: float,
+                 quantity: int, country: str, germination_time: str,
+                 color: str):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_time = germination_time
+        self.color = color
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. " \
+               f"Страна-производитель: {self.country}. " \
+               f"Срок прорастания: {self.germination_time}. " \
+               f"Цвет: {self.color}."

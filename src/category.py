@@ -42,12 +42,12 @@ class Category:
     def __str__(self):
         return f"{self.name}, количество продуктов: {len(self)} шт."
 
-    def add_product(self, product):
-        if not isinstance(product, Product) and not issubclass(type(product),
-                                                               Product):
-            raise TypeError(
-                "Можно добавлять только продукты или их наследников")
-        self.__products.append(product)
+    def add_product(self, new_product):
+        if not isinstance(new_product, Product) and not issubclass(
+                type(new_product), Product):
+            raise (TypeError
+                   ("Можно добавлять только продукты или их наследников"))
+        self.__products.append(new_product)
         Category.total_count_products += 1
 
     def __add__(self, other):

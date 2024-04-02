@@ -1,22 +1,78 @@
-class Product:
-    """
-    Класс, представляющий продукт.
+from abc import ABC, abstractmethod
 
-    аргументы:
-        name (str): Название продукта.
-        description (str): Описание продукта.
-        price (float): Цена продукта.
-        quantity (int): Количество продукта в наличии.
 
-    атрибуты:
-        name (str): Название продукта.
-        description (str): Описание продукта.
-        price (float): Цена продукта.
-        quantity (int): Количество продукта в наличии.
-    """
+class AbstractProduct(ABC):
+    @abstractmethod
+    def __init__(self, name, description, price, quantity):
+        self.quantity = quantity
+        self.price = price
+        self.description = description
+        self.name = name
 
-    def __init__(self, name: str, description: str, price: float,
-                 quantity: int):
+    @property
+    @abstractmethod
+    def name(self):
+        pass
+
+    @name.setter
+    @abstractmethod
+    def name(self, value):
+        pass
+
+    @property
+    @abstractmethod
+    def description(self):
+        pass
+
+    @description.setter
+    @abstractmethod
+    def description(self, value):
+        pass
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value):
+        pass
+
+    @price.deleter
+    @abstractmethod
+    def price(self):
+        pass
+
+    @property
+    @abstractmethod
+    def quantity(self):
+        pass
+
+    @quantity.setter
+    @abstractmethod
+    def quantity(self, value):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class PrintInfoMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(f"{type(self).__name__}{repr(self)}")
+
+
+class Product(PrintInfoMixin, AbstractProduct):
+    def __init__(self, name: str, description: str, price: float, quantity: int,
+                 *args, **kwargs):
+        super().__init__(*args, **kwargs)
         if not isinstance(name, str):
             raise TypeError("имя должно быть строкой")
         if not isinstance(description, str):
@@ -31,10 +87,30 @@ class Product:
         if quantity < 0:
             raise ValueError("количество не может быть отрицательным")
 
-        self.name = name
-        self.description = description
+        self._name = name
+        self._description = description
         self._price = price
-        self.quantity = quantity
+        self._quantity = quantity
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise TypeError("имя должно быть строкой")
+        self._name = value
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        if not isinstance(value, str):
+            raise TypeError("описание должно быть строкой")
+        self._description = value
 
     @property
     def price(self):
@@ -53,17 +129,32 @@ class Product:
     def price(self):
         del self._price
 
-    @classmethod
-    def new_product(cls, name, description, price, quantity):
-        return cls(name, description, price, quantity)
+    @property
+    def quantity(self):
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value):
+        if not isinstance(value, int):
+            raise TypeError("количество должно быть целым числом")
+        if value < 0:
+            raise ValueError("количество не может быть отрицательным")
+        self._quantity = value
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
         if not isinstance(other, self.__class__):
-            raise TypeError(f"Невозможно сложить объекты разных классов: {type(self).__name__} и {type(other).__name__}")
+            raise TypeError(
+                f"Невозможно сложить объекты разных классов: "
+                f"{type(self).__name__} и {type(other).__name__}")
         return self.price * self.quantity + other.price * other.quantity
+
+    @classmethod
+    def new_product(cls, name, description, price, quantity):
+        return cls(name, description, price, quantity)
+
 
 class Smartphone(Product):
     """
@@ -105,6 +196,7 @@ class Smartphone(Product):
                f"Модель: {self.model}. " \
                f"Объем встроенной памяти: {self.memory_size} ГБ. " \
                f"Цвет: {self.color}."
+
 
 class Grass(Product):
     """

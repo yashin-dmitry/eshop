@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class AbstractProduct(ABC):
     @abstractmethod
     def __init__(self, name, description, price, quantity):
@@ -62,12 +61,10 @@ class AbstractProduct(ABC):
     def __add__(self, other):
         pass
 
-
 class PrintInfoMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         print(f"{type(self).__name__}{repr(self)}")
-
 
 class Product(PrintInfoMixin, AbstractProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int,
@@ -86,6 +83,8 @@ class Product(PrintInfoMixin, AbstractProduct):
             raise ValueError("цена не может быть отрицательной")
         if quantity < 0:
             raise ValueError("количество не может быть отрицательным")
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
 
         self._name = name
         self._description = description
@@ -139,6 +138,8 @@ class Product(PrintInfoMixin, AbstractProduct):
             raise TypeError("количество должно быть целым числом")
         if value < 0:
             raise ValueError("количество не может быть отрицательным")
+        if value == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self._quantity = value
 
     def __str__(self):
@@ -154,7 +155,6 @@ class Product(PrintInfoMixin, AbstractProduct):
     @classmethod
     def new_product(cls, name, description, price, quantity):
         return cls(name, description, price, quantity)
-
 
 class Smartphone(Product):
     """
@@ -196,7 +196,6 @@ class Smartphone(Product):
                f"Модель: {self.model}. " \
                f"Объем встроенной памяти: {self.memory_size} ГБ. " \
                f"Цвет: {self.color}."
-
 
 class Grass(Product):
     """

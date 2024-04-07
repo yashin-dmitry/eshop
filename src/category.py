@@ -1,6 +1,5 @@
 from src.products import Product
 
-
 class Category:
     """
     Класс, представляющий категорию продуктов.
@@ -27,6 +26,10 @@ class Category:
         Category.total_count_products += len(self.__products)
 
     def add_product(self, new_product):
+        if not isinstance(new_product, Product) and not issubclass(
+                type(new_product), Product):
+            raise (TypeError
+                   ("Можно добавлять только продукты или их наследников"))
         self.__products.append(new_product)
         Category.total_count_products += 1
 
@@ -58,3 +61,9 @@ class Category:
         new_category.__products = self.__products + other.__products
         new_category.total_count_products = len(new_category.__products)
         return new_category
+
+    def average_price(self):
+        try:
+            return sum(product.price for product in self.__products) / len(self.__products)
+        except ZeroDivisionError:
+            return 0
